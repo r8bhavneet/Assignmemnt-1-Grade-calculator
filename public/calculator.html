@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
     <title>Calculator</title>
     <style>
         * {
@@ -8,7 +12,7 @@
             margin: 0;
             padding: 0;
             user-select: none;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Playfair Display', serif;
             list-style: none;
             scroll-behavior: smooth;
             --background-color: #CC0633
@@ -71,6 +75,7 @@
             padding-right: 8px;
             padding-bottom: 8px;
             padding-left: 8px;
+            margin-top:18px;
             font-weight: bold;
             background-color: var(--background-color);
             color: white;
@@ -82,7 +87,7 @@
             flex-direction: row;
         }
         .button--container > .add-activity:nth-child(1) {
-            margin-right: 4px;
+            margin-right: 4x;
         }
         h4.color-red {
             margin-top: 24px;
@@ -113,9 +118,12 @@
             width:40px;
             height:30px;
         }
-        .result{
+        .resultwithin{
             margin-top:8px;
-            margin-bottom:8px;
+            color: #3d3a35;
+        }
+        .grade{
+           width: 12%;
         }
     </style>
     <script>
@@ -141,10 +149,15 @@
                 let totalActivity = document.querySelectorAll(".activity");
                 let activityNumber = totalActivity.length + 1;
                 var activityClone = activity.cloneNode(true);
+                activityClone.classList.add('activity');
                 tableBody.append(activityClone);
                 var activityChildren = activityClone.children;
                 activityChildren[0].innerHTML = "Activity " + activityNumber;
                 activityChildren[1].innerHTML = "A" + activityNumber;
+                activityChildren[2].querySelector("input").value = "";
+                activityChildren[3].querySelectorAll("input").forEach(e => {e.value = ""});
+                activityChildren[4].innerHTML = "";
+                observeInput(activityClone);
             });
 
             var weighted = document.querySelector("button.weighted");
@@ -157,6 +170,7 @@
                 let w = document.getElementsByClassName("result");
                 let i=0;
                 let weightage;
+                let maxweight=100;
                 let nominator=0;
                 let denominator=0;
                 for(i=0;i<activityNumber;i++){
@@ -168,11 +182,19 @@
                         denominator += (allweights[i].value)*1;
                    }
                 }
+                    if(denominator > 100){
+                        alert("Weightage more than 100.");
+                    }
+                    if(denominator !== 0){
                     console.log(nominator);
                     console.log(denominator);
                     weightage = (nominator/denominator)*100;
                     console.log(weightage)
-                    w.innerHTML = weightage
+                    document.querySelector("h4.results > p > span").innerHTML = parseFloat(weightage).toFixed(2) +" %";;
+                    }
+                    else{
+                        alert("Marks out of has not been entered or its zero.");
+                    }
 
             });
 
@@ -197,17 +219,25 @@
                         count++;
                    }
                 }
+                if(count !== 0){
                 meanmarks = (nominator/count)*100;
-                console.log(meanmarks);
+                document.querySelector("h4.results > p > span").innerHTML = parseFloat(meanmarks).toFixed(2) +" %";
+                }
+                else{
+                    alert("Marks out of has not been entered or its zero.");
+                }
             });
             
             var activites = document.querySelectorAll(".activity");
             activites.forEach(e => {
-                var inputs = e.querySelectorAll(".input");
-                var weight = e.querySelector(".weight");
-                var gradeRecieved = e.querySelector(".grade-recieved");
-                var gradeOutOff = e.querySelector(".grade-outoff");
-                var percent = e.querySelector("td.percentage");
+                observeInput(e);
+            });
+            function observeInput (element) {
+                var inputs = element.querySelectorAll(".input");
+                var weight = element.querySelector(".weight");
+                var gradeRecieved = element.querySelector(".grade-recieved");
+                var gradeOutOff = element.querySelector(".grade-outoff");
+                var percent = element.querySelector("td.percentage");
                 var percentage;
                 for (const input of inputs) {
                     input.addEventListener('input', function (event) {
@@ -223,12 +253,12 @@
                         if (gradeOutOff.value == "" || gradeOutOff.value ==0) {
                             percent.innerHTML = "";
                         } else {
-                            percent.innerHTML = parseFloat(percentage).toFixed(2) +"%";
+                            percent.innerHTML = parseFloat(percentage).toFixed(2) +" %";
                         }
                         
                     });
                 };
-            });  
+            } 
           
         }      
         
@@ -277,10 +307,11 @@
         <button class="add-activity button" name="Add_activity_button" type="button" value="Submit">
             ADD ACTIVITY
         </button>
-        <h4 class='color-red'>
+        <h4 class='results color-red'>
             Results
+            <br>
+            <p class = "resultwithin"><span></span></p>
         </h4>
-        <label>Your grade is : <input class ="result" type="hidden"></label> 
         <div class="button--container">
             <button class="button weighted right-align" name="Add_activity_button" type="button" value="Submit">
                 WEIGHTED
