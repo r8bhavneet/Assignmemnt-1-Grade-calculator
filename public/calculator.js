@@ -95,7 +95,7 @@ window.onload = function () {
         document.querySelector("h4.results > p > span").innerHTML = parseFloat(meanmarks).toFixed(2) +" %";
         }
         else{
-            alert("Marks out zero. Not Possible");
+            alert("Marks out zero. Not Possible divison");
         }
     });
     
