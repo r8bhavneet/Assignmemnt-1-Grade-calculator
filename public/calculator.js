@@ -82,7 +82,7 @@ window.onload = function () {
         let nominator=0;
         for(i = 0;i<activityNumber;i++)
         {
-            if(allweights[i].value=="" || allgrade_outoff[i].value==0 || allgrade_outoff.value=="" || allweights[i].value==0){
+            if( allgrade_outoff[i].value==0 || allgrade_outoff.value=="" ){
              continue;
            }
            else{
@@ -95,7 +95,7 @@ window.onload = function () {
         document.querySelector("h4.results > p > span").innerHTML = parseFloat(meanmarks).toFixed(2) +" %";
         }
         else{
-            alert("Marks out of has not been entered or its zero.");
+            alert("Marks out zero. Not Possible");
         }
     });
     
